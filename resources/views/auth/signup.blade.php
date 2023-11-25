@@ -5,7 +5,6 @@
     <title>Signup</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Add custom styles if needed */
         body {
             padding-top: 50px;
             background-color: #f8f9fa;

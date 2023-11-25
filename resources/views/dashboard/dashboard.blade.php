@@ -12,10 +12,12 @@
                     <div class="p-2" v-for="(rule, index) in formData.rules" :key="index">
 
                         <div class="d-flex align-items-center rules-info">
+
                             <select v-model="rule.show" class="form-control select_option mr-2">
                                 <option class="select_item" value="show">Show</option>
                                 <option class="select_item" value="hide">Don't Show</option>
                             </select>
+
                             <select v-model="rule.type" class="form-control select_option mr-2">
                                 <option class="select_item" value="">Select Rule</option>
                                 <option class="select_item" value="contains">pages that contains</option>
@@ -24,10 +26,12 @@
                                 <option class="select_item" value="ends_with">pages ending with</option>
                                 <option class="select_item" value="exact">Exact</option>
                             </select>
+
                             <p class="pt-3 pl-2 pr-2 align-items-center" v-text='domain'></p>
+
                             <input v-model="rule.value" :name="'rules[' + index + '][value]'" type="text"
                                 class="form-control mr-2">
-                            {{-- <span v-if="getError('rules.' + index + '.value')" class="error">@{{ getError('rules.' + index + '.value') }}</span> --}}
+
                             <button @click="deleteRule(rule.id)" class="btn btn-danger">x</button>
                         </div>
                         <div class="d-flex justify-content-end">

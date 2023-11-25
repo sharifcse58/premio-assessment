@@ -67,7 +67,6 @@ new Vue({
             this.jsSnippet = `<script src="http://premio-assesment.test/generate-script/${this.uniqueId}"></script>`;
         },
         getError(key) {
-            // return this.errors[key] ? this.errors[key][0].replace(`${key} `, '') : '';
             return this.errors[key] ? this.errors[key][0] : '';
         },
 
@@ -78,6 +77,5 @@ new Vue({
                 duration: 2000
             });
         }
-
     }
 });

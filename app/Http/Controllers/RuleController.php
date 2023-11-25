@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Validator;
 
 class RuleController extends Controller
 {
-    // Fetch rules for the authenticated user
     public function index()
     {
         $rules = Rule::where('user_id', auth()->id())->get();
@@ -22,10 +21,8 @@ class RuleController extends Controller
         return response()->json($data);
     }
 
-    // Store a new rule
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'rules.*.show' => 'required|in:show,hide',
             'rules.*.type' => 'required',
@@ -61,7 +58,6 @@ class RuleController extends Controller
         return response()->json(['message' => 'Rules inserted successfully']);
     }
 
-
     public function generateJsSnippet(Request $request)
     {
         $string = $_SERVER['REQUEST_URI'];
@@ -77,50 +73,52 @@ class RuleController extends Controller
         $alertText = AlertInformation::where('user_id', $userId)->value('text');
         $alertText = $alertText ?? 'Hello world!';
 
-        foreach ($rules as $rule) {
-            // Process each rule condition and construct the JS snippet logic
-            $condition = '';
-            switch ($rule['type']) {
-                case 'contains':
-                    $condition = "window.location.href.indexOf('{$rule['value']}') !== -1";
-                    break;
-                case 'start_with':
-                    $condition = "window.location.href.startsWith('{$rule['value']}')";
-                    break;
-                case 'ends_with':
-                    $condition = "window.location.href.endsWith('{$rule['value']}')";
-                    break;
-                case 'specific_page':
-                    $condition = "window.location.href === '{$rule['value']}'";
-                    break;
-                case 'exact':
-                    $condition = "window.location.href === '{$rule['value']}'";
-                    break;
-                default:
-                    $condition =  false;
-                    break;
+        if ($rules) {
+            foreach ($rules as $rule) {
+                $condition = '';
+                switch ($rule['type']) {
+                    case 'contains':
+                        $condition = "window.location.href.indexOf('{$rule['value']}') !== -1";
+                        break;
+                    case 'start_with':
+                        $condition = "window.location.href.startsWith('{$rule['value']}')";
+                        break;
+                    case 'ends_with':
+                        $condition = "window.location.href.endsWith('{$rule['value']}')";
+                        break;
+                    case 'specific_page':
+                        $condition = "window.location.href === '{$rule['value']}'";
+                        break;
+                    case 'exact':
+                        $condition = "window.location.href === '{$rule['value']}'";
+                        break;
+                    default:
+                        $condition =  false;
+                        break;
+                }
+
+                if ($rule['show'] === 'hide') {
+                    $dontShowConditions[] = $condition;
+                } else {
+                    $showConditions[] = $condition;
+                }
             }
 
-            if ($rule['show'] === 'hide') {
-                $dontShowConditions[] = $condition;
-            } else {
-                $showConditions[] = $condition;
-            }
+            // Combine conditions for 'Show' and 'Don't Show' using logical OR (||)
+            $showCondition = !empty($showConditions) ? '(' . implode(' || ', $showConditions) . ')' : 'false';
+            $dontShowCondition = !empty($dontShowConditions) ? '(' . implode(' || ', $dontShowConditions) . ')' : 'false';
+
+            // Construct the JavaScript snippet with the final combined condition
+            $jsSnippet = "if ({$showCondition} && !({$dontShowCondition})) {";
+            $jsSnippet .= "alert('$alertText!');";
+            $jsSnippet .= "}";
+
+            return response($jsSnippet)->header('Content-Type', 'text/javascript');
         }
 
-        // Combine conditions for 'Show' and 'Don't Show' using logical OR (||)
-        $showCondition = !empty($showConditions) ? '(' . implode(' || ', $showConditions) . ')' : 'false';
-        $dontShowCondition = !empty($dontShowConditions) ? '(' . implode(' || ', $dontShowConditions) . ')' : 'false';
-
-        // Construct the JavaScript snippet with the final combined condition
-        $jsSnippet = "if ({$showCondition} && !({$dontShowCondition})) {";
-        $jsSnippet .= "alert('$alertText!');";
-        $jsSnippet .= "}";
-
-        return response($jsSnippet)->header('Content-Type', 'text/javascript');
+        return response()->json(['success' => false]);
     }
 
-    // Delete a rule
     public function destroy($id)
     {
         Rule::where('user_id', auth()->id())->where('id', $id)->delete();
