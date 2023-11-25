@@ -33,7 +33,6 @@ new Vue({
                 });
         },
         saveRules() {
-
             axios.post('/rules/store', { rules: this.formData.rules, alertText: this.formData.alertText })
                 .then(response => {
                     this.showToast();
@@ -70,7 +69,6 @@ new Vue({
         getError(key) {
             return this.errors[key] ? this.errors[key][0] : '';
         },
-
         showToast() {
             this.$toasted.show('Item saved successfully!', {
                 position: 'top-right',

@@ -33,19 +33,21 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('dashboard.dashboard');
-    })->name('dashboard');
-
     Route::get('/', function () {
         return redirect()->route('dashboard');
     });
 
+    Route::get('/dashboard', function () {
+        return view('dashboard.dashboard');
+    })->name('dashboard');
+
     Route::get('/rules', [RuleController::class, 'index'])->name('rules.index');
     Route::post('/rules/store', [RuleController::class, 'store'])->name('rules.post');
     Route::delete('/rules/{roleId}', [RuleController::class, 'destroy'])->name('rules.destroy');
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 
 Route::get('/generate-script/{uniqueKey}', [RuleController::class, 'generateJsSnippet'])->name('generateJsSnippet');
