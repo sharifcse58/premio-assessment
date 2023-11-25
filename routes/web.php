@@ -42,8 +42,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/rules', [RuleController::class, 'index'])->name('rules.index');
-    Route::delete('/rules/{roleId}', [RuleController::class, 'destroy'])->name('rules.destroy');
     Route::post('/rules/store', [RuleController::class, 'store'])->name('rules.post');
+    Route::delete('/rules/{roleId}', [RuleController::class, 'destroy'])->name('rules.destroy');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

@@ -1,11 +1,11 @@
 <?php
-// RuleController.php
 
 namespace App\Http\Controllers;
 
-use App\Models\AlertInformation;
 use App\Models\Rule;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\AlertInformation;
 use Illuminate\Support\Facades\Validator;
 
 class RuleController extends Controller
@@ -16,7 +16,7 @@ class RuleController extends Controller
         $alertInfo = AlertInformation::where('user_id', auth()->id())->first();
         $data = [];
         $data['rules'] = $rules;
-        $data['unique_id'] = 'UNIQUE_' . auth()->id();
+        $data['client_id'] = $alertInfo->unique_id;
         $data['alertInfo'] = $alertInfo;
         return response()->json($data);
     }
@@ -27,6 +27,7 @@ class RuleController extends Controller
             'rules.*.show' => 'required|in:show,hide',
             'rules.*.type' => 'required',
             'rules.*.value' => 'required|string',
+            'alertText' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -36,10 +37,23 @@ class RuleController extends Controller
         $rulesData = $request->input('rules');
         $alertText = $request->input('alertText');
 
-        if ($alertText) {
+        $alertInfo = AlertInformation::where('user_id', auth()->id())->first();
+        if ($alertInfo) {
+            $alertInfo->text = $alertText;
+            $alertInfo->save();
+        } else {
+            $randomUniqueId = Str::uuid()->toString();
+            $uniqueId = $randomUniqueId . '_' . auth()->id();
             AlertInformation::updateOrCreate(
-                ['user_id' => auth()->id()],
-                ['text' => $alertText]
+                [
+                    'user_id' => auth()->id(),
+                    'text' => $alertText,
+                ],
+                [
+                    'user_id' => auth()->id(),
+                    'text' => $alertText,
+                    'unique_id' => $uniqueId
+                ]
             );
         }
 

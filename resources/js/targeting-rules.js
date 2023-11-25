@@ -38,6 +38,7 @@ new Vue({
                 .then(response => {
                     this.showToast();
                     this.fetchRules();
+                    this.errors = [];
                 })
                 .catch(error => {
                     console.error('Error saving rules:', error);
@@ -51,7 +52,7 @@ new Vue({
             axios.get('/rules')
                 .then(response => {
                     this.formData.rules = response.data.rules;
-                    this.uniqueId = response.data.unique_id;
+                    this.uniqueId = response.data.client_id;
                     this.formData.alertText = response.data.alertInfo?.text;
                     if (!response.data.rules.length) {
                         this.addRule();

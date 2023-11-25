@@ -7,7 +7,9 @@
                 <div class="mt-5">
                     <h4 v-if="formData.rules.length" v-text="jsSnippet"></h4>
                     <div class="col-md-6 m-0 p-2">
-                        <label>Alert text:</label><input type="text" class="form-control" v-model="formData.alertText">
+                        <label>Alert text:</label><input type="text" placeholder="Write any alert text..."
+                            class="form-control" v-model="formData.alertText">
+                        <span class="error" v-if="getError('alertText')" v-text="getError('alertText')"></span>
                     </div>
                     <div class="p-2" v-for="(rule, index) in formData.rules" :key="index">
 
