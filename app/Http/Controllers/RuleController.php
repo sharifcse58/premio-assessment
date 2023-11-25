@@ -26,19 +26,19 @@ class RuleController extends Controller
     public function store(Request $request)
     {
 
-        // $validator = Validator::make($request->all(), [
-        //     'rules' => 'required|array',
-        //     'rules.*.show' => 'required|in:Show,Don\'t Show',
-        //     'rules.*.condition' => 'required|in:Contains,Starts With,Ends With,Exact',
-        //     'rules.*.value' => 'required|string',
-        // ]);
+        $validator = Validator::make($request->all(), [
+            'rules.*.show' => 'required|in:show,hide',
+            'rules.*.type' => 'required',
+            'rules.*.value' => 'required|string',
+        ]);
 
-        // if ($validator->fails()) {
-        //     return response()->json(['errors' => $validator->errors()], 422);
-        // }
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
         $rulesData = $request->input('rules');
         $alertText = $request->input('alertText');
+
         if ($alertText) {
             AlertInformation::updateOrCreate(
                 ['user_id' => auth()->id()],
@@ -75,11 +75,11 @@ class RuleController extends Controller
 
         $rules = Rule::where('user_id', $userId)->get();
         $alertText = AlertInformation::where('user_id', $userId)->value('text');
+        $alertText = $alertText ?? 'Hello world!';
 
         foreach ($rules as $rule) {
             // Process each rule condition and construct the JS snippet logic
             $condition = '';
-
             switch ($rule['type']) {
                 case 'contains':
                     $condition = "window.location.href.indexOf('{$rule['value']}') !== -1";

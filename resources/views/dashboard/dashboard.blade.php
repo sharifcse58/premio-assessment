@@ -10,12 +10,12 @@
                         <label>Alert text:</label><input type="text" class="form-control" v-model="formData.alertText">
                     </div>
                     <div class="p-2" v-for="(rule, index) in formData.rules" :key="index">
+
                         <div class="d-flex align-items-center rules-info">
                             <select v-model="rule.show" class="form-control select_option mr-2">
                                 <option class="select_item" value="show">Show</option>
                                 <option class="select_item" value="hide">Don't Show</option>
                             </select>
-
                             <select v-model="rule.type" class="form-control select_option mr-2">
                                 <option class="select_item" value="">Select Rule</option>
                                 <option class="select_item" value="contains">pages that contains</option>
@@ -25,10 +25,21 @@
                                 <option class="select_item" value="exact">Exact</option>
                             </select>
                             <p class="pt-3 pl-2 pr-2 align-items-center" v-text='domain'></p>
-                            <input v-model="rule.value" type="text" class="form-control mr-2">
+                            <input v-model="rule.value" :name="'rules[' + index + '][value]'" type="text"
+                                class="form-control mr-2">
+                            {{-- <span v-if="getError('rules.' + index + '.value')" class="error">@{{ getError('rules.' + index + '.value') }}</span> --}}
                             <button @click="deleteRule(rule.id)" class="btn btn-danger">x</button>
                         </div>
+                        <div class="d-flex justify-content-end">
+                            <span class="error" v-if="getError('rules.' + index + '.show')"
+                                v-text="getError('rules.' + index + '.show')"></span>
+                            <span class="error" v-if="getError('rules.' + index + '.type')"
+                                v-text="getError('rules.' + index + '.type')"></span>
+                            <span class="error" v-if="getError('rules.' + index + '.value')"
+                                v-text="getError('rules.' + index + '.value')"></span>
+                        </div>
                     </div>
+
                     <div class="d-flex justify-between gap-4">
                         <button @click="addRule" class="btn add-more">Add Rule</button>
                         <button @click="saveRules" class="btn ml-2 save-btn">Save</button>
@@ -68,6 +79,16 @@
         .save-btn {
             background-color: #81AAB9;
             color: white
+        }
+
+        .error {
+            color: red;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .input-container {
+            margin-bottom: 15px;
         }
     </style>
 @endpush

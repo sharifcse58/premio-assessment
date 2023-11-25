@@ -13,7 +13,8 @@ new Vue({
         },
         domain: 'www.domain.com/',
         jsSnippet: '',
-        uniqueId: ''
+        uniqueId: '',
+        errors: []
     },
     mounted() {
         this.fetchRules();
@@ -32,6 +33,7 @@ new Vue({
                 });
         },
         saveRules() {
+
             axios.post('/rules/store', { rules: this.formData.rules, alertText: this.formData.alertText })
                 .then(response => {
                     this.showToast();
@@ -39,6 +41,10 @@ new Vue({
                 })
                 .catch(error => {
                     console.error('Error saving rules:', error);
+
+                    if (error.response.status === 422) {
+                        this.errors = error.response.data.errors;
+                    }
                 });
         },
         fetchRules() {
@@ -60,6 +66,11 @@ new Vue({
         setSnippet() {
             this.jsSnippet = `<script src="http://premio-assesment.test/generate-script/${this.uniqueId}"></script>`;
         },
+        getError(key) {
+            // return this.errors[key] ? this.errors[key][0].replace(`${key} `, '') : '';
+            return this.errors[key] ? this.errors[key][0] : '';
+        },
+
         showToast() {
             this.$toasted.show('Item saved successfully!', {
                 position: 'top-right',
