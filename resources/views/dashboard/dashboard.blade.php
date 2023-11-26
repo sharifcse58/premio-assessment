@@ -57,7 +57,7 @@
 @endsection
 
 @push('scripts')
-    @vite(['resources/scss/app.scss', 'resources/js/app.js'])
+    @vite(['resources/js/app.js'])
 @endpush
 
 @push('custom_css')
