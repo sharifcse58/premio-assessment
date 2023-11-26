@@ -21,7 +21,7 @@ jobs:
           # password: ${{ secrets.DDEV_PASS }}
           KEY: ${{ secrets.DDEV_SSH_SECRET_KEY }}
           source: "."
-          target: "/var/www/html/dummy"
+          target: "/var/www/dummy"
 
       - name: executing laravel deployement commands
         uses: appleboy/ssh-action@master
