@@ -14,6 +14,7 @@ class RuleController extends Controller
     {
         $rules = Rule::where('user_id', auth()->id())->get();
         $alertInfo = AlertInformation::where('user_id', auth()->id())->first();
+        $data = [];
         if($alertInfo){
             $data['client_id'] = $alertInfo->unique_id;
             $data['alertInfo'] = $alertInfo;
@@ -21,7 +22,7 @@ class RuleController extends Controller
             $data['client_id'] = '';
             $data['alertInfo'] = new AlertInformation();
         }
-        $data = [];
+      
         $data['rules'] = $rules;
        
         return response()->json($data);
