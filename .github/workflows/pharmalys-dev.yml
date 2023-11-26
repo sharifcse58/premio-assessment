@@ -32,8 +32,8 @@ jobs:
           # password: ${{ secrets.PLS_DDEV_PASS }}
           KEY: ${{ secrets.DDEV_SSH_SECRET_KEY }}
           script: |
-            # cd /var/www/html/dummy
-            cd /var/www/html/dummy
+            # cd /var/www/dummy
+            cd /var/www/dummy
             echo "creating env file...."
             php -r "file_exists('.env') || copy('.env.example', '.env');"
             echo "executing composer install...."
