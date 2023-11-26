@@ -14,10 +14,16 @@ class RuleController extends Controller
     {
         $rules = Rule::where('user_id', auth()->id())->get();
         $alertInfo = AlertInformation::where('user_id', auth()->id())->first();
+        if($alertInfo){
+            $data['client_id'] = $alertInfo->unique_id;
+            $data['alertInfo'] = $alertInfo;
+        }else{
+            $data['client_id'] = '';
+            $data['alertInfo'] = new AlertInformation();
+        }
         $data = [];
         $data['rules'] = $rules;
-        $data['client_id'] = $alertInfo->unique_id;
-        $data['alertInfo'] = $alertInfo;
+       
         return response()->json($data);
     }
 
