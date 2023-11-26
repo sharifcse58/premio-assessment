@@ -1,9 +1,9 @@
-name: premio project deployement
+name: dummy project deployement
 
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
@@ -15,22 +15,22 @@ jobs:
       - name: Copy file via scp
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.DEV_HOST }}
-          username: ${{ secrets.DEV_USER }}
-          port: ${{ secrets.DEV_PORT }}
-          # password: ${{ secrets.DEV_PASS }}
-          KEY: ${{ secrets.DEV_SSH_SECRET_KEY }}
+          host: ${{ secrets.DDEV_HOST }}
+          username: ${{ secrets.DDEV_USER }}
+          port: ${{ secrets.DDEV_PORT }}
+          # password: ${{ secrets.DDEV_PASS }}
+          KEY: ${{ secrets.DDEV_SSH_SECRET_KEY }}
           source: "."
           target: "/var/www/html/dummy"
 
       - name: executing laravel deployement commands
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.DEV_HOST }}
-          username: ${{ secrets.DEV_USER }}
-          port: ${{ secrets.DEV_PORT }}
-          # password: ${{ secrets.PLS_DEV_PASS }}
-          KEY: ${{ secrets.DEV_SSH_SECRET_KEY }}
+          host: ${{ secrets.DDEV_HOST }}
+          username: ${{ secrets.DDEV_USER }}
+          port: ${{ secrets.DDEV_PORT }}
+          # password: ${{ secrets.PLS_DDEV_PASS }}
+          KEY: ${{ secrets.DDEV_SSH_SECRET_KEY }}
           script: |
             # cd /var/www/html/dummy
             cd /var/www/html/dummy
