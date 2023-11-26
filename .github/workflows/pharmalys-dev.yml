@@ -49,7 +49,7 @@ jobs:
             php artisan l5-swagger:generate
             echo "run seed"
             php artisan db:seed
-            #echo "finally unit testing..."
+            echo "finally unit testing..."
             #vendor/bin/phpunit
             echo "Cache clear..."
             php artisan cache:clear
