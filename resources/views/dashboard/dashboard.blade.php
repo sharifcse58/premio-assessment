@@ -57,7 +57,7 @@
 @endsection
 
 @push('scripts')
-    @vite(['resources/js/app.js'])
+    @vite(['resources/js/targeting-rules.js'])
 @endpush
 
 @push('custom_css')
