@@ -18,7 +18,7 @@ jobs:
           host: ${{ secrets.DDEV_HOST }}
           username: ${{ secrets.DDEV_USER }}
           port: ${{ secrets.DDEV_PORT }}
-          # password: ${{ secrets.DDEV_PASS }}
+          password: ${{ secrets.DDEV_PASS }}
           KEY: ${{ secrets.DDEV_SSH_SECRET_KEY }}
           source: "."
           target: "/var/www/dummy"
@@ -29,7 +29,7 @@ jobs:
           host: ${{ secrets.DDEV_HOST }}
           username: ${{ secrets.DDEV_USER }}
           port: ${{ secrets.DDEV_PORT }}
-          # password: ${{ secrets.PLS_DDEV_PASS }}
+          password: ${{ secrets.DDEV_PASS }}
           KEY: ${{ secrets.DDEV_SSH_SECRET_KEY }}
           script: |
             # cd /var/www/dummy
