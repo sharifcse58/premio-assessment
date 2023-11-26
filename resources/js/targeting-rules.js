@@ -23,14 +23,19 @@ new Vue({
         addRule() {
             this.formData.rules.push({ show: 'show', type: 'contains', value: '' });
         },
-        deleteRule(ruleId) {
-            axios.delete(`/rules/${ruleId}`)
-                .then(response => {
-                    this.formData.rules = this.formData.rules.filter(rule => rule.id !== ruleId);
-                })
-                .catch(error => {
-                    console.error('Error deleting rule:', error);
-                });
+        deleteRule(ruleId, index) {
+            if (ruleId) {
+                axios.delete(`/rules/${ruleId}`)
+                    .then(response => {
+                        this.formData.rules = this.formData.rules.filter(rule => rule.id !== ruleId);
+                    })
+                    .catch(error => {
+                        console.error('Error deleting rule:', error);
+                    });
+            } else {
+                this.formData.rules.splice(index, 1);
+            }
+
         },
         saveRules() {
             axios.post('/rules/store', { rules: this.formData.rules, alertText: this.formData.alertText })

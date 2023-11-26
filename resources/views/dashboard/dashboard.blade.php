@@ -34,7 +34,7 @@
                             <input v-model="rule.value" :name="'rules[' + index + '][value]'" type="text"
                                 class="form-control mr-2">
 
-                            <button @click="deleteRule(rule.id)" class="btn btn-danger">x</button>
+                            <button @click="deleteRule(rule.id, index)" class="btn btn-danger">x</button>
                         </div>
                         <div class="d-flex justify-content-end">
                             <span class="error" v-if="getError('rules.' + index + '.show')"
